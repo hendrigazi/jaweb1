@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class StudentService {
-    private final List<Student> students = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
     
     public void addStudent(Student student) {
         students.add(student);
@@ -18,12 +19,10 @@ public class StudentService {
         students.forEach(System.out::println);
     }
     public boolean removeStudentByNim(String nim) {
-    for (Student s : students) {
-        if (s.getNim().equalsIgnoreCase(nim)) {
-            students.remove(s);
-            return true;
-            }
-        }
-        return false;
+    int originalSize = students.size();
+    students = students.stream()
+            .filter(s -> !s.getNim().equalsIgnoreCase(nim))
+            .collect(Collectors.toList());
+    return students.size() < originalSize;
     }
 }
